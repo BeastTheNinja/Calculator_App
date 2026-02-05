@@ -1,73 +1,135 @@
-# React + TypeScript + Vite
+# Calculator App 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+En moderne lommeregner-applikation bygget med React, TypeScript, Vite og Tailwind CSS.
 
-Currently, two official plugins are available:
+##  Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-  Grundlæggende regnoperationer: Plus (+), minus (-), gange (*), dividere (/)
+-  Display med stort, læseligt tal
+-  DELETE knap til at fjerne sidste ciffer
+-  CLEAR knap til at nulstille hele beregningen
+- Dark mode design med Tailwind CSS
+-  Responsiv grid layout
+-  Type-safe med TypeScript
+-  State management med React useReducer hook
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React** 18+ - UI Framework
+- **TypeScript** - Type safety
+- **Vite** - Lightning fast build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Hooks** - useReducer for state management
 
-## Expanding the ESLint configuration
+##  Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Clone repositoriet
+git clone https://github.com/BeastTheNinja/Calculator_App.git
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Gå ind i projektet
+cd Calculator_App
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Installer dependencies
+npm install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start development serveren
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Åbn browserens på `http://localhost:5173`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+##  Project Structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── App.tsx                 # Root komponent
+├── main.tsx               # Entry point
+├── components/
+│   ├── header.tsx         # Header komponent
+│   ├── footer.tsx         # Footer komponent
+│   └── Calculator/
+│       ├── CalculatorContainer.tsx    # Main calculator komponent
+│       └── CalculatorControls.tsx     # Knap-layout komponent
+├── data/
+│   ├── CalculatorAction.ts           # Action type definitions
+│   └── CalculatorInitValue.ts        # Initial state
+├── reducer/
+│   └── CalculatorReducer.tsx         # State reducer logik
+├── layout/
+│   └── AppLayout.tsx                 # Layout wrapper
+└── style/
+    └── tailwind.css                  # Tailwind styling
+```
+
+##  Arkitektur
+
+### State Management with useReducer
+
+Lommeregner bruger **React useReducer hook** til state management:
+
+```tsx
+const [state, dispatch] = useReducer(CalculatorReducer, '');
+```
+
+### Action Types
+
+| Action | Description |
+|--------|---|
+| `ADD_DIGIT` | Tilføjer et tal (0-9) til displayet |
+| `ADD_+` | Tilføjer plus operator |
+| `ADD_-` | Tilføjer minus operator |
+| `ADD_*` | Tilføjer gange operator |
+| `ADD_/` | Tilføjer dividere operator |
+| `ADD_=` | Evaluerer hele udtrykket og viser resultat |
+| `CLEAR` | Nulstiller lommeregner |
+| `DELETE` | Sletter sidste ciffer |
+
+### Reducer Logic
+
+Reduceren håndterer alle operationer:
+
+- **ADD_DIGIT**: Tilføjer ciffer til state string
+- **Operators**: Tilføjer operator symbol
+- **ADD_=**: Bruger `eval()` til at beregne resultatet
+- **DELETE**: Fjerner sidste karakter med `slice()`
+- **CLEAR**: Nulstiller state til tom streng
+
+##  How to Use
+
+1. **Tast tal** - Klik på tal-knapperne (0-9)
+2. **Vælg operation** - Klik +, -, *, eller /
+3. **Tast mere tal** - Fortsæt med at tilføje tal
+4. **Beregn** - Tryk = for at få resultat
+5. **Nullstil** - Tryk CLEAR for at starte forfra
+6. **Slet** - Tryk DELETE for at fjerne sidste ciffer
+
+##  Styling
+
+Applikationen bruger Tailwind CSS med:
+
+- **Mørkt tema**: Grå og sort baggrund
+- **Farvekodede knapper**:
+  - Grå: Tal-knapper
+  - Blå: Operators
+  - Grøn: Lighedstegn
+  - Orange: Delete
+  - Rød: Clear
+- **Responsive design**: Centreret på skærmen
+
+##  Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+##  License
+
+Se LICENSE filen for detaljer
+
+##  Author
+
+BeastTheNinja
